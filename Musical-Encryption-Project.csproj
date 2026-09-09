@@ -9,4 +9,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="musical encryption logo.png" />
+    <Resource Include="musical encryption logo.png" />
+  </ItemGroup>
+
 </Project>

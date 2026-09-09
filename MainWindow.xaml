@@ -5,8 +5,445 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Musical_Encryption_Project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Musical Encryption"
+        Height="500" Width="820"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+
+        <!-- Color palette -->
+        <SolidColorBrush x:Key="CardBackground" Color="#D9D9D9" />
+        <SolidColorBrush x:Key="FieldBackground" Color="#F2F2F2" />
+        <SolidColorBrush x:Key="TextColor" Color="Black" />
+        <SolidColorBrush x:Key="FieldBorder" Color="#9E9E9E" />
+        <SolidColorBrush x:Key="AccentGreen" Color="#2E7D32" />
+
+        <!-- Base field label -->
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+            <Setter Property="Margin" Value="0,0,0,4" />
+        </Style>
+
+        <!-- Styled text box -->
+        <Style x:Key="FieldTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Padding" Value="10,0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+            <Setter Property="Background" Value="{StaticResource FieldBackground}" />
+            <Setter Property="BorderBrush" Value="{StaticResource FieldBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#616161" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource AccentGreen}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Styled password box (same look as the text box) -->
+        <Style x:Key="FieldPasswordBox" TargetType="PasswordBox">
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Padding" Value="10,0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+            <Setter Property="Background" Value="{StaticResource FieldBackground}" />
+            <Setter Property="BorderBrush" Value="{StaticResource FieldBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#616161" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource AccentGreen}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Primary green button -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="{StaticResource AccentGreen}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#388E3C" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#1B5E20" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Small text button -->
+        <Style x:Key="TextButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent" Padding="4,2">
+                            <TextBlock x:Name="t"
+                                       Text="{TemplateBinding Content}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       HorizontalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="t" Property="TextDecorations" Value="Underline" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Text button as RadioButton, used to switch screens (XAML only, no code-behind) -->
+        <Style x:Key="TextRadioButton" TargetType="RadioButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="Transparent" Padding="4,2">
+                            <TextBlock x:Name="t"
+                                       Text="{TemplateBinding Content}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       HorizontalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="t" Property="TextDecorations" Value="Underline" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Language switch button (top-right). Unchecked = English (default), Checked = Hebrew -->
+        <Style x:Key="LangButton" TargetType="ToggleButton">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Padding" Value="14,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="bd"
+                                Background="{StaticResource FieldBackground}"
+                                BorderBrush="{StaticResource FieldBorder}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#616161" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#C8C8C8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== Localized text styles: default English, switch to Hebrew when LangToggle is checked ===== -->
+
+        <Style x:Key="UsernameLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource FieldLabel}">
+            <Setter Property="Text" Value="Username" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=LangToggle}" Value="True">
+                    <Setter Property="Text" Value="שם משתמש" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PasswordLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource FieldLabel}">
+            <Setter Property="Text" Value="Password" />
+            <Setter Property="Margin" Value="0,14,0,4" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=LangToggle}" Value="True">
+                    <Setter Property="Text" Value="סיסמה" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ConfirmPasswordLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource FieldLabel}">
+            <Setter Property="Text" Value="Confirm Password" />
+            <Setter Property="Margin" Value="0,14,0,4" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=LangToggle}" Value="True">
+                    <Setter Property="Text" Value="אימות סיסמה" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CreateUserTitleStyle" TargetType="TextBlock">
+            <Setter Property="Text" Value="Create Account" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,0,0,20" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=LangToggle}" Value="True">
+                    <Setter Property="Text" Value="יצירת משתמש" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="VersionTextStyle" TargetType="TextBlock">
+            <Setter Property="Text" Value="Version 1.0.0" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=LangToggle}" Value="True">
+                    <Setter Property="Text" Value="גרסה 1.0.0" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="LoginButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Content" Value="Login" />
+            <Setter Property="Margin" Value="0,20,0,0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=LangToggle}" Value="True">
+                    <Setter Property="Content" Value="היכנס" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CreateButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Content" Value="Create Account" />
+            <Setter Property="Margin" Value="0,20,0,0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=LangToggle}" Value="True">
+                    <Setter Property="Content" Value="צור משתמש" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="OtherWayButtonStyle" TargetType="Button" BasedOn="{StaticResource TextButton}">
+            <Setter Property="Content" Value="Sign in another way" />
+            <Setter Property="Margin" Value="0,8,0,0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=LangToggle}" Value="True">
+                    <Setter Property="Content" Value="היכנס בדרך אחרת" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="NavToCreateUserStyle" TargetType="RadioButton" BasedOn="{StaticResource TextRadioButton}">
+            <Setter Property="Content" Value="Create account" />
+            <Setter Property="Margin" Value="0,12,0,0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=LangToggle}" Value="True">
+                    <Setter Property="Content" Value="צור משתמש" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="NavToLoginStyle" TargetType="RadioButton" BasedOn="{StaticResource TextRadioButton}">
+            <Setter Property="Content" Value="Back to login" />
+            <Setter Property="Margin" Value="0,12,0,0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=LangToggle}" Value="True">
+                    <Setter Property="Content" Value="חזרה להתחברות" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Screen shown only while NavToCreateUser is unchecked (login screen) -->
+        <Style x:Key="LoginScreenVisibility" TargetType="StackPanel">
+            <Setter Property="Visibility" Value="Visible" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=NavToCreateUser}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Screen shown only while NavToCreateUser is checked (create-account screen) -->
+        <Style x:Key="CreateUserScreenVisibility" TargetType="StackPanel">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=NavToCreateUser}" Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <!-- Background: translucent gray (the rest of the app will show through later, like the Minecraft GUI dim) -->
+    <Grid Background="#B3808080">
+
+        <!-- Logo, top-left -->
+        <Image x:Name="LogoImage"
+               Source="musical encryption logo.png"
+               Width="80"
+               Height="80"
+               Margin="20"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Stretch="Uniform" />
+
+        <!-- Language switch, top-right -->
+        <ToggleButton x:Name="LangToggle"
+                      Content="Language"
+                      Style="{StaticResource LangButton}"
+                      Margin="20"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Top" />
+
+        <!-- Software version, bottom-left -->
+        <TextBlock Style="{StaticResource VersionTextStyle}"
+                   Margin="20"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom" />
+
+        <!-- ===================== Login screen ===================== -->
+        <StackPanel Style="{StaticResource LoginScreenVisibility}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+            <Border Width="340"
+                    Background="{StaticResource CardBackground}"
+                    BorderBrush="#8A8A8A"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="26,22">
+                <StackPanel>
+
+                    <TextBlock Text="Musical Encryption"
+                               FontSize="22"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TextColor}"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,20" />
+
+                    <TextBlock Style="{StaticResource UsernameLabelStyle}" />
+                    <TextBox x:Name="UsernameTextBox"
+                             Style="{StaticResource FieldTextBox}" />
+
+                    <TextBlock Style="{StaticResource PasswordLabelStyle}" />
+                    <PasswordBox x:Name="PasswordBox"
+                                 Style="{StaticResource FieldPasswordBox}" />
+
+                    <Button Style="{StaticResource LoginButtonStyle}" />
+
+                    <Button Style="{StaticResource OtherWayButtonStyle}" />
+
+                </StackPanel>
+            </Border>
+
+            <!-- Go to the create-account screen -->
+            <RadioButton x:Name="NavToCreateUser"
+                         GroupName="Screen"
+                         Style="{StaticResource NavToCreateUserStyle}" />
+
+        </StackPanel>
+
+        <!-- ===================== Create-account screen ===================== -->
+        <StackPanel Style="{StaticResource CreateUserScreenVisibility}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+            <Border Width="340"
+                    Background="{StaticResource CardBackground}"
+                    BorderBrush="#8A8A8A"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="26,22">
+                <StackPanel>
+
+                    <TextBlock Style="{StaticResource CreateUserTitleStyle}" />
+
+                    <TextBlock Style="{StaticResource UsernameLabelStyle}" />
+                    <TextBox x:Name="NewUsernameTextBox"
+                             Style="{StaticResource FieldTextBox}" />
+
+                    <TextBlock Style="{StaticResource PasswordLabelStyle}" />
+                    <PasswordBox x:Name="NewPasswordBox"
+                                 Style="{StaticResource FieldPasswordBox}" />
+
+                    <TextBlock Style="{StaticResource ConfirmPasswordLabelStyle}" />
+                    <PasswordBox x:Name="ConfirmPasswordBox"
+                                 Style="{StaticResource FieldPasswordBox}" />
+
+                    <Button Style="{StaticResource CreateButtonStyle}" />
+
+                </StackPanel>
+            </Border>
+
+            <!-- Back to the login screen -->
+            <RadioButton x:Name="NavToLogin"
+                         GroupName="Screen"
+                         IsChecked="True"
+                         Style="{StaticResource NavToLoginStyle}" />
+
+        </StackPanel>
 
     </Grid>
 </Window>
